@@ -1,0 +1,53 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+        "page1": {
+            "type": "object",
+            "properties": {
+                "bool_data": {
+                    "type": "boolean",
+                    "title": "testing value",
+                    "description": "A value for testing",
+                    "default": true
+                },
+                "num_data": {
+                    "type": "integer",
+                    "title": "number",
+                    "maximum": 300
+                }
+            },
+            "additionalProperties": false,
+            "required": [
+                "bool_data",
+                "num_data"
+            ],
+            "title": "first page"
+        },
+        "page2": {
+            "type": "object",
+            "properties": {
+                "str_data": {
+                    "type": "string",
+                    "title": "test1"
+                },
+                "optional": {
+                    "type": "string",
+                    "title": "test2",
+                    "maxLength": 8
+                }
+            },
+            "additionalProperties": false,
+            "required": [
+                "str_data",
+                "optional"
+            ],
+            "title": "页面二"
+        }
+    },
+    "additionalProperties": false,
+    "required": [
+        "page1",
+        "page2"
+    ]
+}
