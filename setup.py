@@ -1,6 +1,6 @@
 import setuptools
 
-with open("./dist/README.md", "r") as fh:
+with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
@@ -18,4 +18,9 @@ setuptools.setup(
         "License :: OSI Approved :: GPL License",
         "Operating System :: OS Independent",
     ],
+    install_requires=[
+        'PySide6',
+        'jsonschema',
+        'ujson'
+    ]
 )
