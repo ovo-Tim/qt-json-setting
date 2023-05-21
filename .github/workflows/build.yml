@@ -1,0 +1,40 @@
+# action的名称
+name: Upload Python Package
+
+on:
+  # 当一个pr被合并到master时，触发action
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    name: publish python package to PYPI
+    # 此作业在 Linux 上运行
+    runs-on: ubuntu-latest
+
+    steps:
+    # 此步骤使用 GitHub 的 https://github.com/actions/checkout
+    - uses: actions/checkout@v2
+    
+    # 设置python环境
+    # 此步骤使用 GitHub 的 https://github.com/actions/setup-python
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+    
+    # 安装依赖
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install setuptools wheel twine
+    
+    # 构建和发布
+    - name: Build and publish
+      env:
+        TWINE_USERNAME: __token__
+        TWINE_PASSWORD: pypi-AgEIcHlwaS5vcmcCJDNkMTg2MWViLWE5NWQtNDA2YS1iNWQ2LTE0MDBhZmI4NDc2NwACKlszLCI5NzE0M2YzZi0zYjljLTQ4NWEtYjQxYi00ODAyNTc3OTJhNWMiXQAABiBf0wL_Ue1qZh5_GIywar5IczxMQDg7BtTeADFYoSM1aA
+      run: |
+        python setup.py sdist bdist_wheel
+        twine upload dist/*
