@@ -34,7 +34,8 @@
                 "optional": {
                     "type": "string",
                     "title": "test2",
-                    "maxLength": 8
+                    "maxLength": 8,
+                    "item_list": ["bule", "green", "yellow"]
                 }
             },
             "additionalProperties": false,
