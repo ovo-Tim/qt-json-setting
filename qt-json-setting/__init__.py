@@ -5,6 +5,25 @@ from qtpy.QtWidgets import *
 import sys
 import jsonschema
 
+class choose_setting(QComboBox):
+    def __init__(self,setting: dict , page: str, name: str, schema: dict, check_func):
+        super().__init__()
+        self.setting , self.page, self.schema, self.name,self.check_func = setting , page, schema, name, check_func
+        # self.addItems(self.schema['item_list'])
+        j = 0
+        for i in self.schema['item_list']:
+            self.addItem(i)
+            if i == self.setting[self.page][self.name]:
+                self.setCurrentIndex(j)
+            j += 1
+        self.currentTextChanged.connect(self.change)
+        self.setMinimumHeight(20)
+        if 'description' in self.schema:
+            self.setToolTip(self.tr((self.schema['description'] + f"(default:{self.schema['default']})")))
+    def change(self):
+        self.setting[self.page][self.name] = self.currentText()
+        self.check_func()
+
 class bool_setting(QCheckBox):
     def __init__(self,setting: dict , page: str, name: str, schema: dict, check_func):
         super().__init__()
@@ -18,12 +37,12 @@ class bool_setting(QCheckBox):
     def change(self):
         self.setting[self.page][self.name] = self.isChecked()
         self.check_func()
-
+    
 class str_setting(QLineEdit):
     def __init__(self,setting: dict , page: str, name: str, schema: dict, check_func):
         super().__init__()
         self.setting , self.page, self.schema, self.name,self.check_func = setting , page, schema, name, check_func
-        self.setText(self.setting[self.page][self.name])
+        self.setText(self.tr(self.setting[self.page][self.name]))
         self.textEdited.connect(self.change)
         self.setMinimumHeight(20)
         if 'description' in self.schema:
@@ -64,9 +83,14 @@ class setting_widget(QWidget):
             name_label = QLabel()
             name_label.setText(self.tr(self.schema['title']))
             self.main_layout.addWidget(name_label)
-            self.main_layout.addWidget(
-                str_setting(self.setting, self.page, self.name, self.schema, self.check)
-            )
+            if 'item_list' in self.schema:
+                self.main_layout.addWidget(
+                    choose_setting(self.setting, self.page, self.name, self.schema, self.check)
+                )
+            else:
+                self.main_layout.addWidget(
+                    str_setting(self.setting, self.page, self.name, self.schema, self.check)
+                )
         elif self.type == 'integer':
             name_label = QLabel()
             name_label.setText(self.tr(self.schema['title']))
@@ -81,9 +105,9 @@ class setting_widget(QWidget):
             self.err_msg.clear()
             return True
         except jsonschema.exceptions.ValidationError as err: # 捕捉错误
-            self.err_msg.setText(str(err))
+            self.err_msg.setText(str(err).split("\n")[0])
 
-class window(QWidget):
+class seting_window(QWidget):
     def __init__(self, json_path: str, json_schema_path: str):
         super().__init__()
         # 读取文件
@@ -107,7 +131,7 @@ class window(QWidget):
         self.close_btn = QPushButton(text = self.tr('close'))
         self.close_btn.clicked.connect(sys.exit)
         self.ok_btn = QPushButton(text = self.tr('ok'))
-        self.ok_btn.clicked.connect(lambda: save(close=True))
+        self.ok_btn.clicked.connect(lambda: self.save(close=True))
         self.btns.addWidget(self.appely_btn)
         self.btns.addWidget(self.close_btn)
         self.btns.addWidget(self.ok_btn)
@@ -133,6 +157,6 @@ class window(QWidget):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    win = window('./example/example.json', './example/example-schema.json')
+    win = seting_window('./example/example.json', './example/example-schema.json')
     win.show()
     app.exec_()
