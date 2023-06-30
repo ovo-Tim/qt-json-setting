@@ -1,7 +1,7 @@
 import ujson as json
-from PySide6.QtCore import *
-from PySide6.QtGui import *
-from PySide6.QtWidgets import *
+from qtpy.QtCore import *
+from qtpy.QtGui import *
+from qtpy.QtWidgets import *
 import sys
 import jsonschema
 
@@ -135,4 +135,4 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     win = window('./example/example.json', './example/example-schema.json')
     win.show()
-    app.exec()
+    app.exec_()
