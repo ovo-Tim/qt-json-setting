@@ -4,7 +4,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="pyqt-json-setting",
+    name="qt-json-setting",
     version="0.2",
     author="ovo-tim",
     author_email="ovo-tim@qq.com",
@@ -19,7 +19,7 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     install_requires=[
-        'PySide6',
+        'Pyside6',
         'jsonschema',
         'ujson'
     ]
