@@ -129,7 +129,7 @@ class seting_window(QWidget):
         self.appely_btn = QPushButton(text = self.tr('appely'))
         self.appely_btn.clicked.connect(self.save)
         self.close_btn = QPushButton(text = self.tr('close'))
-        self.close_btn.clicked.connect(sys.exit)
+        self.close_btn.clicked.connect(self.close)
         self.ok_btn = QPushButton(text = self.tr('ok'))
         self.ok_btn.clicked.connect(lambda: self.save(close=True))
         self.btns.addWidget(self.appely_btn)
@@ -152,7 +152,7 @@ class seting_window(QWidget):
         with open(self.json_path, 'w') as f:
             f.write(json.encode(self.setting))
         if close:
-            sys.exit()
+            self.close()
         
 
 if __name__ == '__main__':
