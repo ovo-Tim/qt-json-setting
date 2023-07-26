@@ -19,7 +19,7 @@ class choose_setting(QComboBox):
         self.currentTextChanged.connect(self.change)
         self.setMinimumHeight(20)
         if 'description' in self.schema:
-            self.setToolTip(self.tr((self.schema['description'] + f"(default:{self.schema['default']})")))
+            self.setToolTip(_((self.schema['description'] + f"(default:{self.schema['default']})")))
     def change(self):
         self.setting[self.page][self.name] = self.currentText()
         self.check_func()
@@ -29,9 +29,9 @@ class bool_setting(QCheckBox):
         super().__init__()
         self.setting , self.page, self.schema, self.name,self.check_func = setting , page, schema, name, check_func
         self.setChecked(self.setting[self.page][self.name])
-        self.setText(self.tr(self.schema['title']))
+        self.setText(_(self.schema['title']))
         if 'description' in self.schema:
-            self.setToolTip(self.tr(self.schema['description'] + f"(default:{self.schema['default']})"))
+            self.setToolTip(_(self.schema['description'] + f"(default:{self.schema['default']})"))
 
         self.stateChanged.connect(self.change)
     def change(self):
@@ -42,11 +42,11 @@ class str_setting(QLineEdit):
     def __init__(self,setting: dict , page: str, name: str, schema: dict, check_func):
         super().__init__()
         self.setting , self.page, self.schema, self.name,self.check_func = setting , page, schema, name, check_func
-        self.setText(self.tr(self.setting[self.page][self.name]))
+        self.setText(_(self.setting[self.page][self.name]))
         self.textEdited.connect(self.change)
         self.setMinimumHeight(20)
         if 'description' in self.schema:
-            self.setToolTip(self.tr((self.schema['description'] + f"(default:{self.schema['default']})")))
+            self.setToolTip(_((self.schema['description'] + f"(default:{self.schema['default']})")))
     def change(self):
         self.setting[self.page][self.name] = self.text()
         self.check_func()
@@ -59,7 +59,7 @@ class int_setting(QLineEdit):
         self.textEdited.connect(self.change)
         self.setMinimumHeight(20)
         if 'description' in self.schema:
-            self.setToolTip(self.tr((self.schema['description'] + f"(default:{self.schema['default']})")))
+            self.setToolTip(_((self.schema['description'] + f"(default:{self.schema['default']})")))
     def change(self):
         self.setting[self.page][self.name] = int(self.text())
         self.check_func()
@@ -81,7 +81,7 @@ class setting_widget(QWidget):
             )
         elif self.type == 'string':
             name_label = QLabel()
-            name_label.setText(self.tr(self.schema['title']))
+            name_label.setText(_(self.schema['title']))
             self.main_layout.addWidget(name_label)
             if 'item_list' in self.schema:
                 self.main_layout.addWidget(
@@ -93,7 +93,7 @@ class setting_widget(QWidget):
                 )
         elif self.type == 'integer':
             name_label = QLabel()
-            name_label.setText(self.tr(self.schema['title']))
+            name_label.setText(_(self.schema['title']))
             self.main_layout.addWidget(name_label)
             self.main_layout.addWidget(
                 int_setting(self.setting, self.page, self.name, self.schema, self.check)
@@ -126,11 +126,11 @@ class seting_window(QWidget):
         self.btns = QHBoxLayout(self)
         self.main_layout.addLayout(self.btns)
         self.btns.addStretch(1)
-        self.appely_btn = QPushButton(text = self.tr('appely'))
+        self.appely_btn = QPushButton(text = _('appely'))
         self.appely_btn.clicked.connect(self.save)
-        self.close_btn = QPushButton(text = self.tr('close'))
+        self.close_btn = QPushButton(text = _('close'))
         self.close_btn.clicked.connect(self.close)
-        self.ok_btn = QPushButton(text = self.tr('ok'))
+        self.ok_btn = QPushButton(text = _('ok'))
         self.ok_btn.clicked.connect(lambda: self.save(close=True))
         self.btns.addWidget(self.appely_btn)
         self.btns.addWidget(self.close_btn)
@@ -143,7 +143,7 @@ class seting_window(QWidget):
             self.setting_page[page].setWidgetResizable(True)
             page_layout = QVBoxLayout(self.setting_page[page])
             tab_widget.setLayout(page_layout)
-            self.setting_page_widget.addTab(self.setting_page[page], self.tr(self.json_schema['properties'][page]['title']))
+            self.setting_page_widget.addTab(self.setting_page[page], _(self.json_schema['properties'][page]['title']))
             for name in setting:
                 _schema = self.json_schema['properties'][page]['properties'][name]
                 page_layout.addWidget(setting_widget(self.setting, page, name,_schema))
