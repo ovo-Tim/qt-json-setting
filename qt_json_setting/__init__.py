@@ -19,7 +19,7 @@ class choose_setting(QComboBox):
         self.currentTextChanged.connect(self.change)
         self.setMinimumHeight(20)
         if 'description' in self.schema:
-            self.setToolTip(_((self.schema['description'] + f"(default:{self.schema['default']})")))
+            self.setToolTip(_(self.schema['description']) + f"(default:{self.schema['default']})")
     def change(self):
         self.setting[self.page][self.name] = self.currentText()
         self.check_func()
@@ -31,7 +31,7 @@ class bool_setting(QCheckBox):
         self.setChecked(self.setting[self.page][self.name])
         self.setText(_(self.schema['title']))
         if 'description' in self.schema:
-            self.setToolTip(_(self.schema['description'] + f"(default:{self.schema['default']})"))
+            self.setToolTip(_(self.schema['description']) + f"(default:{self.schema['default']})")
 
         self.stateChanged.connect(self.change)
     def change(self):
@@ -46,7 +46,7 @@ class str_setting(QLineEdit):
         self.textEdited.connect(self.change)
         self.setMinimumHeight(20)
         if 'description' in self.schema:
-            self.setToolTip(_((self.schema['description'] + f"(default:{self.schema['default']})")))
+            self.setToolTip(_(self.schema['description']) + f"(default:{self.schema['default']})")
     def change(self):
         self.setting[self.page][self.name] = self.text()
         self.check_func()
@@ -59,7 +59,7 @@ class int_setting(QLineEdit):
         self.textEdited.connect(self.change)
         self.setMinimumHeight(20)
         if 'description' in self.schema:
-            self.setToolTip(_((self.schema['description'] + f"(default:{self.schema['default']})")))
+            self.setToolTip(_(self.schema['description']) + f"(default:{self.schema['default']})")
     def change(self):
         self.setting[self.page][self.name] = int(self.text())
         self.check_func()
